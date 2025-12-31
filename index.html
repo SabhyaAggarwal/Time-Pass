@@ -226,7 +226,7 @@
             
             timeDisplay.textContent = `${hoursStr}:${minutes}:${seconds} ${ampm}`;
             
-            const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Dubai' };
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
             dateDisplay.textContent = now.toLocaleDateString('en-US', options);
 
             // Check if it's New Year (midnight on January 1st)
@@ -264,10 +264,15 @@
                 }, i * 50);
             }
             
-            // Create fireworks
-            setInterval(() => {
+            // Create fireworks for 1 minute, then stop to prevent memory leaks
+            const fireworksInterval = setInterval(() => {
                 createFirework();
             }, 500);
+            
+            // Stop fireworks after 60 seconds
+            setTimeout(() => {
+                clearInterval(fireworksInterval);
+            }, 60000);
         }
 
         function createConfetti() {
